@@ -1,0 +1,33 @@
+.checking {
+    $base-color: #f16a6a;
+    $rgb-value: rgba(73, 86, 203, 0.5);
+
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    background: linear-gradient(180deg, $base-color 0%, $rgb-value 100%);
+    .hero-image {
+        width: 60vw;
+        height: 100vh;
+    }
+    .prompts {
+        height: 100vh;
+        width: 40vw;
+        border: 0;
+        p {
+            font-family: "Poppins", cursive;
+            font-size: 3rem;
+            color: #fff;
+            text-align: center;
+            letter-spacing: 0.3rem;
+            margin-top: 3em;
+        }
+        .input-fields{
+            padding:1em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    }
+}
