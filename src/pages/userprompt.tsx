@@ -1,21 +1,24 @@
-import React, { useRef } from "react";
-import Hero from "../assets/hero.jpg";
-import "../styles/userprompt.scss";
+import React, { useRef, useState } from 'react';
+import Hero from '../assets/hero.jpg';
+import '../styles/userprompt.scss';
 
 //api
-import { apiLogin } from "../api";
+import { apiLogin } from '../api';
 
 //Components
-import { Input } from "baseui/input";
-import { Button, SHAPE } from "baseui/button";
+import { Input } from 'baseui/input';
+import { Button, SHAPE } from 'baseui/button';
+import Snackbar from '../components/Snackbar';
 
 //store
-import { connect } from "react-redux";
-import { login } from "../store/user/user.actions";
+import { connect } from 'react-redux';
+import { login } from '../store/user/user.actions';
 
 const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passRef = useRef<HTMLInputElement>(null);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
     const login = async () => {
         const details = {
@@ -25,12 +28,14 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
         try {
             const messege = await apiLogin(details);
             if (messege.error !== null) {
-                console.log(messege.error);
+                setErrorMessage(messege.error);
+                setShowSnackbar(true);
                 return;
             }
             setLogin(messege.data);
         } catch (err) {
-            console.log(err);
+            setErrorMessage(err);
+            setShowSnackbar(true);
         }
     };
 
@@ -42,7 +47,7 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
             <div className="prompts">
                 <p>Konohagakure</p>
                 <div className="input-fields">
-                    <div style={{ margin: "1em 0", width: "100%" }}>
+                    <div style={{ margin: '1em 0', width: '100%' }}>
                         <Input
                             startEnhancer="@"
                             placeholder="Email"
@@ -50,7 +55,7 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
                             size="large"
                         />
                     </div>
-                    <div style={{ margin: "1em 0", width: "100%" }}>
+                    <div style={{ margin: '1em 0', width: '100%' }}>
                         <Input
                             startEnhancer="?"
                             type="password"
@@ -61,9 +66,9 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
                     </div>
                     <div
                         style={{
-                            margin: "1em 0",
-                            width: "20em",
-                            height: "5em",
+                            margin: '1em 0',
+                            width: '20em',
+                            height: '5em',
                         }}
                     >
                         <Button
@@ -74,15 +79,15 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
                                 BaseButton: {
                                     style: () => {
                                         return {
-                                            width: "100%",
-                                            height: "100%",
-                                            backgroundColor: "#EFB7B7",
+                                            width: '100%',
+                                            height: '100%',
+                                            backgroundColor: '#EFB7B7',
                                         };
                                     },
                                 },
                             }}
                         >
-                            Log In{" "}
+                            Log In{' '}
                         </Button>
                     </div>
                     <Button
@@ -93,16 +98,24 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
                                 style: () => {
                                     return {
                                         backgroundColor:
-                                            "rgba(73, 86, 203, 0.5)",
+                                            'rgba(73, 86, 203, 0.5)',
                                     };
                                 },
                             },
                         }}
                     >
-                        Sign Up{" "}
+                        Sign Up{' '}
                     </Button>
                 </div>
             </div>
+            {showSnackbar && (
+                <Snackbar
+                    log={`${errorMessage}`}
+                    handleClose={() => {
+                        setShowSnackbar(false);
+                    }}
+                />
+            )}
         </div>
     );
 };

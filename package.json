@@ -45,8 +45,11 @@
         "file-loader": "^6.1.0",
         "fork-ts-checker-webpack-plugin": "^5.2.0",
         "html-webpack-plugin": "^4.4.1",
+        "husky": "^4.3.8",
         "node-sass": "^4.14.1",
-        "prettier": "^2.1.2",
+        "plop": "^2.7.4",
+        "pre-commit": "^1.2.2",
+        "prettier": "^2.2.1",
         "redux-devtools-extension": "^2.13.8",
         "sass": "^1.26.11",
         "sass-loader": "^10.0.2",
@@ -63,6 +66,13 @@
         "dev": "webpack-dev-server --mode=development --env.development --open --hot --progress",
         "build": "webpack --mode production --env.production --progress",
         "lint": "eslint './src/**/*.{ts,tsx}'",
-        "lint:fix": "eslint './src/**/*.{ts,tsx}' --fix"
+        "lint-fix": "eslint './src/**/*.{ts,tsx}' --fix",
+        "pretty-check": "prettier --check './src/**/*.{ts,tsx}'",
+        "pretty": "prettier './src/**/*.{ts,tsx}' --tab-width 4 --single-quote true"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn lint-fix && yarn pretty"
+        }
     }
 }
