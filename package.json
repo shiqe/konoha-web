@@ -68,7 +68,7 @@
         "lint": "eslint './src/**/*.{ts,tsx}'",
         "lint-fix": "eslint './src/**/*.{ts,tsx}' --fix",
         "pretty-check": "prettier --check './src/**/*.{ts,tsx}'",
-        "pretty": "prettier './src/**/*.{ts,tsx}' --tab-width 4 --single-quote true"
+        "pretty": "prettier './src/**/*.{ts,tsx}' --tab-width 4 --single-quote"
     },
     "husky": {
         "hooks": {

@@ -1,5 +1,5 @@
-export const SET_LOGIN = "SET_LOGIN";
-export const SET_LOGOUT = "SET_LOGOUT";
+export const SET_LOGIN = 'SET_LOGIN';
+export const SET_LOGOUT = 'SET_LOGOUT';
 
 // Types
 interface SetLogin {
@@ -8,7 +8,7 @@ interface SetLogin {
 }
 interface SetLogout {
     type: typeof SET_LOGOUT;
-    payload: unknown;
+    payload: null;
 }
 
-export type userAction = SetLogin | SetLogout ;
+export type userAction = SetLogin | SetLogout;
