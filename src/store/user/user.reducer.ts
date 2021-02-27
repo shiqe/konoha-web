@@ -1,4 +1,5 @@
-import { SET_LOGIN, SET_LOGOUT, userAction } from "./user.types";
+import { storeToken, removeToken } from '../../utils/helpers';
+import { SET_LOGIN, SET_LOGOUT, userAction } from './user.types';
 
 const initialState = {
     isLogged: false,
@@ -7,12 +8,15 @@ const initialState = {
 
 const userReducer = (
     state = initialState,
-    action: userAction
+    action: userAction,
 ): typeof initialState => {
     switch (action.type) {
         case SET_LOGIN:
+            const token = action.payload;
+            storeToken(token);
             return { ...state, isLogged: true };
         case SET_LOGOUT:
+            removeToken();
             return {
                 ...state,
                 isLogged: false,

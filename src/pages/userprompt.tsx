@@ -17,8 +17,8 @@ import { login } from '../store/user/user.actions';
 const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passRef = useRef<HTMLInputElement>(null);
-    const [errorMessage, setErrorMessage] = useState<string>('');
-    const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showSnackbar, setShowSnackbar] = useState(false);
 
     const login = async () => {
         const details = {
@@ -123,7 +123,7 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
 const actionAsProps = {
     setLogin: login,
 };
-const stateAsProps = (reducers) => {
+const stateAsProps = (reducers: any) => {
     return {
         isLogged: reducers.user.isLogged,
     };
