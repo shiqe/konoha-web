@@ -1,6 +1,5 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-
 import { GlobalState } from '../rootReducer';
 import { SET_LOGIN, SET_LOGOUT } from './user.types';
 
