@@ -1,8 +1,7 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-
 import { GlobalState } from '../rootReducer';
-import { SET_LOGIN, SET_LOGOUT } from './user.types';
+import { SET_LOGIN, SET_LOGOUT, CHECK_LOGIN } from './user.types';
 
 export const login = (
     token: string,
@@ -20,5 +19,10 @@ export const logout = (): ThunkAction<
     Action<string>
 > => async (dispatch) => {
     const action = { type: SET_LOGOUT, payload: null };
+    dispatch(action);
+};
+
+export const checkLogin = () => async (dispatch: any) => {
+    const action = { type: CHECK_LOGIN, payload: null };
     dispatch(action);
 };

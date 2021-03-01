@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { connect } from 'react-redux';
 import { LightTheme, BaseProvider, styled } from 'baseui';
 import { Client as Styletron } from 'styletron-engine-atomic';
@@ -7,6 +8,8 @@ import { Provider as StyletronProvider } from 'styletron-react';
 import './styles/global.scss';
 import Home from './pages/home';
 import UserPrompt from './pages/userprompt';
+import Loader from './components/Generic/Loader';
+import { checkLogin } from '../src/store/user/user.actions';
 
 const engine = new Styletron();
 const Centered = styled('div', {
@@ -17,15 +20,30 @@ const Centered = styled('div', {
 
 interface AppProps {
     isLogged: boolean;
+    checkLogin: () => void;
 }
 
-function App({ isLogged }: AppProps): JSX.Element {
+function App({ isLogged, checkLogin }: AppProps): JSX.Element {
+    const [isChecking, setChecking] = useState(true);
+
     const renderPages = () => {
+        if (isChecking) {
+            return <Loader />;
+        }
         if (isLogged) {
             return <Home />;
         }
         return <UserPrompt />;
     };
+
+    const checkIfTokenStored = () => {
+        checkLogin();
+        setChecking(false);
+    };
+
+    useEffect(() => {
+        checkIfTokenStored();
+    }, []);
 
     return (
         <>
@@ -44,4 +62,8 @@ const stateAsProps = (reducers: any) => {
     };
 };
 
-export default connect(stateAsProps, {})(App);
+const actionAsProps = {
+    checkLogin: checkLogin,
+};
+
+export default connect(stateAsProps, actionAsProps)(App);
