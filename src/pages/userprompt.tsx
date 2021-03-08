@@ -7,6 +7,7 @@ import { apiLogin } from '../api';
 
 //Components
 import { Input } from 'baseui/input';
+import SignUp from '../components/SignUp';
 import { Button, SHAPE } from 'baseui/button';
 import Snackbar from '../components/Snackbar';
 
@@ -14,11 +15,15 @@ import Snackbar from '../components/Snackbar';
 import { connect } from 'react-redux';
 import { login } from '../store/user/user.actions';
 
+type Section = 'login' | 'signup';
+
 const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
-    const emailRef = useRef<HTMLInputElement>(null);
     const passRef = useRef<HTMLInputElement>(null);
+    const emailRef = useRef<HTMLInputElement>(null);
+
     const [errorMessage, setErrorMessage] = useState('');
     const [showSnackbar, setShowSnackbar] = useState(false);
+    const [section, setSection] = useState<Section>('login');
 
     const login = async () => {
         const details = {
@@ -39,75 +44,84 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
         }
     };
 
+    const onSignUpClick = () => {
+        setSection('signup');
+    };
+
     return (
         <div className="checking">
             <div className="hero-image">
                 <img src={Hero} alt="hero-img" width="100%" height="100%" />
             </div>
-            <div className="prompts">
-                <p>Konohagakure</p>
-                <div className="input-fields">
-                    <div style={{ margin: '1em 0', width: '100%' }}>
-                        <Input
-                            startEnhancer="@"
-                            placeholder="Email"
-                            inputRef={emailRef}
-                            size="large"
-                        />
-                    </div>
-                    <div style={{ margin: '1em 0', width: '100%' }}>
-                        <Input
-                            startEnhancer="?"
-                            type="password"
-                            placeholder="Password"
-                            inputRef={passRef}
-                            size="large"
-                        />
-                    </div>
-                    <div
-                        style={{
-                            margin: '1em 0',
-                            width: '20em',
-                            height: '5em',
-                        }}
-                    >
+            {section === 'login' ? (
+                <div className="prompts">
+                    <p>Konohagakure</p>
+                    <div className="input-fields">
+                        <div style={{ margin: '1em 0', width: '100%' }}>
+                            <Input
+                                startEnhancer="@"
+                                placeholder="Email"
+                                inputRef={emailRef}
+                                size="large"
+                            />
+                        </div>
+                        <div style={{ margin: '1em 0', width: '100%' }}>
+                            <Input
+                                startEnhancer="?"
+                                type="password"
+                                placeholder="Password"
+                                inputRef={passRef}
+                                size="large"
+                            />
+                        </div>
+                        <div
+                            style={{
+                                margin: '1em 0',
+                                width: '20em',
+                                height: '5em',
+                            }}
+                        >
+                            <Button
+                                onClick={login}
+                                size="large"
+                                shape={SHAPE.pill}
+                                overrides={{
+                                    BaseButton: {
+                                        style: () => {
+                                            return {
+                                                width: '100%',
+                                                height: '100%',
+                                                backgroundColor: '#EFB7B7',
+                                            };
+                                        },
+                                    },
+                                }}
+                            >
+                                Log In{' '}
+                            </Button>
+                        </div>
                         <Button
-                            onClick={login}
                             size="large"
                             shape={SHAPE.pill}
+                            onClick={onSignUpClick}
                             overrides={{
                                 BaseButton: {
                                     style: () => {
                                         return {
-                                            width: '100%',
-                                            height: '100%',
-                                            backgroundColor: '#EFB7B7',
+                                            backgroundColor:
+                                                'rgba(73, 86, 203, 0.5)',
                                         };
                                     },
                                 },
                             }}
                         >
-                            Log In{' '}
+                            Sign Up{' '}
                         </Button>
                     </div>
-                    <Button
-                        size="large"
-                        shape={SHAPE.pill}
-                        overrides={{
-                            BaseButton: {
-                                style: () => {
-                                    return {
-                                        backgroundColor:
-                                            'rgba(73, 86, 203, 0.5)',
-                                    };
-                                },
-                            },
-                        }}
-                    >
-                        Sign Up{' '}
-                    </Button>
                 </div>
-            </div>
+            ) : (
+                <SignUp />
+            )}
             {showSnackbar && (
                 <Snackbar
                     log={`${errorMessage}`}
