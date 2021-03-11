@@ -1,28 +1,49 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, SyntheticEvent, useState } from 'react';
 
 import { Input } from 'baseui/input';
 import styled from 'styled-components';
 
 import { size } from '../../utils/spacing';
+import { signUpUser } from '../../api';
 import PrimaryButton from '../Generic/PrimaryButton';
 import { FlexContainer, Title } from '../Generic/styled';
+import SnackBar from '../Snackbar';
 
 const initialCredentials = {
-    username: '',
+    name: '',
     email: '',
     password: '',
 };
 
 export default function SignUp(): ReactElement | null {
+    const [snackBarMsg, setSnackbarMsg] = useState('');
+    const [openSnackbar, setSnackbar] = useState(false);
     const [userCredentials, setUserCredentials] = useState(initialCredentials);
 
     function handleInputChange(field: string, value: string) {
         setUserCredentials({ ...userCredentials, [field]: value });
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
-        console.log(userCredentials);
+
+        const msg = await signUpUser(userCredentials);
+        const { data } = msg;
+
+        setSnackbar(true);
+        setSnackbarMsg(data);
+    }
+
+    function renderSnackbar() {
+        if (openSnackbar) {
+            return (
+                <SnackBar
+                    log={snackBarMsg}
+                    handleClose={() => setSnackbar(false)}
+                />
+            );
+        }
+        return null;
     }
 
     return (
@@ -35,9 +56,9 @@ export default function SignUp(): ReactElement | null {
                             startEnhancer="="
                             placeholder="Username"
                             size="large"
-                            value={userCredentials.username}
+                            value={userCredentials.name}
                             onChange={(e) =>
-                                handleInputChange('username', e.target.value)
+                                handleInputChange('name', e.target.value)
                             }
                         />
                         <Input
@@ -66,6 +87,7 @@ export default function SignUp(): ReactElement | null {
                         />
                     </FlexContainer>
                 </form>
+                {renderSnackbar()}
             </FlexContainer>
         </Container>
     );
