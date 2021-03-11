@@ -23,5 +23,5 @@ export default Snackbar;
 
 interface propsInterface {
     log: string;
-    handleClose(): void;
+    handleClose: () => void;
 }

@@ -120,7 +120,7 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
                     </div>
                 </div>
             ) : (
-                <SignUp />
+                <SignUp handleBackPress={() => setSection('login')} />
             )}
             {showSnackbar && (
                 <Snackbar
