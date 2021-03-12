@@ -25,7 +25,8 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [section, setSection] = useState<Section>('login');
 
-    const login = async () => {
+    const login = async (event: HTMLFormElement) => {
+        event.preventDefault();
         const details = {
             email: emailRef.current.value,
             password: passRef.current.value,
@@ -56,7 +57,7 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
             {section === 'login' ? (
                 <div className="prompts">
                     <p>Konohagakure</p>
-                    <div className="input-fields">
+                    <form className="input-fields">
                         <div style={{ margin: '1em 0', width: '100%' }}>
                             <Input
                                 startEnhancer="@"
@@ -82,6 +83,7 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
                             }}
                         >
                             <Button
+                                type="submit"
                                 onClick={login}
                                 size="large"
                                 shape={SHAPE.pill}
@@ -117,7 +119,7 @@ const UserPrompt = ({ setLogin }: typeof actionAsProps): JSX.Element => {
                         >
                             Sign Up{' '}
                         </Button>
-                    </div>
+                    </form>
                 </div>
             ) : (
                 <SignUp handleBackPress={() => setSection('login')} />
